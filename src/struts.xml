@@ -22,9 +22,36 @@
         </global-results>
         <action name="register" class="userAction" method="addOrUpdateUser"> 
             <result name="success" type="json" >  
-                     <param name="includeProperties">ans.*</param> 
+                     <param name="includeProperties">status.*</param> 
+            </result>
+        </action>
+        <action name="login" class="userAction" method="login"> 
+            <result name="success" type="json" >  
+                     <param name="includeProperties">status.*</param> 
+            </result>
+        </action>
+        <action name="addcard" class="cardAction" method="addCard">
+        	 <result name="success" type="json" >  
+                     <param name="includeProperties">cardid,status.*</param> 
             </result>
         </action>
         
+        <action name="deletecard" class="cardAction" method="deleteCard">
+        	 <result name="success" type="json" >  
+                     <param name="includeProperties">status.*</param> 
+            </result>
+        </action>
+        
+        <action name="updatecard" class="cardAction" method="updateCard">
+        	 <result name="success" type="json" >  
+                     <param name="includeProperties">status.*</param> 
+            </result>
+        </action>
+        
+        <action name="getcard" class="cardAction" method="getAllCard">
+        	 <result name="success" type="json" >  
+                     <param name="includeProperties">allcard,status.*</param> 
+            </result>
+        </action>
     </package>
 </struts>    

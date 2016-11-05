@@ -11,14 +11,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.ServletResponseAware;
 
-import com.google.gson.Gson;
+import com.alibaba.fastjson.JSON;
 import com.opensymphony.xwork2.ActionSupport;
 import com.yasin.model.User;
 import com.yasin.service.IUserService;
+import com.yasin.utils.Utils;
 
 public class UserAction extends ActionSupport implements ServletRequestAware{
-	private String uid, pwd;
-	private String ans = "0";
+	private String status;
 
 	private HttpServletRequest request;
 	
@@ -31,28 +31,12 @@ public class UserAction extends ActionSupport implements ServletRequestAware{
 		this.request = request;
 	}
 
-	public String getUid() {
-		return uid;
+	public String getStatus() {
+		return status;
 	}
 
-	public void setUid(String uid) {
-		this.uid = uid;
-	}
-
-	public String getPwd() {
-		return pwd;
-	}
-
-	public void setPwd(String pwd) {
-		this.pwd = pwd;
-	}
-
-	public String getAns() {
-		return ans;
-	}
-
-	public void setAns(String ans) {
-		this.ans = ans;
+	public void setStatus(String state) {
+		this.status = state;
 	}
 
 	private IUserService userService;
@@ -65,39 +49,45 @@ public class UserAction extends ActionSupport implements ServletRequestAware{
 		this.userService = userService;
 	}
 
-	public String addOrUpdateUser() throws IOException{
-		System.out.println("uid="+uid+"pwd="+pwd);
-		System.out.println(stream2String(request.getInputStream()));
+	public String addOrUpdateUser(){
+		String content;
+		try {
+			content = Utils.stream2String(request.getInputStream());
+			System.out.println(content);
+			User user = JSON.parseObject(content,User.class);
+			System.out.println(user.getUid()+","+user.getPwd());
+			if(userService.addOrUpdateUser(user)){
+				status="0";
+			}else{
+				status="1";
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			status="0";
+		}
 		
-		ans="12";
 		return SUCCESS;
 	}
 
+	public String login() throws IOException{
+		String content = Utils.stream2String(request.getInputStream());
+		System.out.println(content);
+		User user = JSON.parseObject(content, User.class);
+		if(userService.checkUser(user)!=null){
+			status="0";
+		}else{
+			status="1";
+		}
+		
+		return SUCCESS;
+	}
+	
+	
 	@Override
 	public void setServletRequest(HttpServletRequest arg0) {
 		// TODO Auto-generated method stub
 		this.request = arg0;
 	}
-
-	public String stream2String(InputStream is) {
-		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-		StringBuilder sb = new StringBuilder();
-		String line = null;
-		try {
-			while ((line = reader.readLine()) != null) {
-				sb.append(line);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				is.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		return sb.toString();
-	}
-
 
 }

@@ -12,13 +12,11 @@
         <property name="pwd" type="java.lang.String">
             <column name="pwd" length="30" not-null="true" />
         </property>
-        <set name="cards" table="have" catalog="icard">
+        <set name="cards" inverse="true">
             <key>
                 <column name="uid" length="11" not-null="true" />
             </key>
-            <many-to-many entity-name="com.yasin.model.Card">
-                <column name="cid" not-null="true" />
-            </many-to-many>
+            <one-to-many class="com.yasin.model.Card" />
         </set>
     </class>
 </hibernate-mapping>

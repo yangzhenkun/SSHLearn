@@ -25,8 +25,7 @@ public class UserService implements IUserService {
 
 	@Override
 	public User checkUser(User user) {
-		// TODO Auto-generated method stub
-		return null;
+		return userDAO.checkUser(user);
 	}
 
 }

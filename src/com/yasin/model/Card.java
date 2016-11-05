@@ -1,8 +1,5 @@
 package com.yasin.model;
 
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * Card entity. @author MyEclipse Persistence Tools
  */
@@ -12,8 +9,8 @@ public class Card implements java.io.Serializable {
 	// Fields
 
 	private Integer cid;
+	private User user;
 	private String cinfo;
-	private Set users = new HashSet(0);
 
 	// Constructors
 
@@ -21,10 +18,15 @@ public class Card implements java.io.Serializable {
 	public Card() {
 	}
 
+	/** minimal constructor */
+	public Card(User user) {
+		this.user = user;
+	}
+
 	/** full constructor */
-	public Card(String cinfo, Set users) {
+	public Card(User user, String cinfo) {
+		this.user = user;
 		this.cinfo = cinfo;
-		this.users = users;
 	}
 
 	// Property accessors
@@ -37,20 +39,20 @@ public class Card implements java.io.Serializable {
 		this.cid = cid;
 	}
 
+	public User getUser() {
+		return this.user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	public String getCinfo() {
 		return this.cinfo;
 	}
 
 	public void setCinfo(String cinfo) {
 		this.cinfo = cinfo;
-	}
-
-	public Set getUsers() {
-		return this.users;
-	}
-
-	public void setUsers(Set users) {
-		this.users = users;
 	}
 
 }
